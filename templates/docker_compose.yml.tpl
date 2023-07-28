@@ -27,7 +27,6 @@ services:
       TFE_OBJECT_STORAGE_S3_SERVER_SIDE_ENCRYPTION: AES256
       TFE_LICENSE_PATH: /etc/ssl/private/terraform-enterprise/tfe-license.lic
       TFE_METRICS_ENABLE: false
-      TFE_REDIS_USER: ${redis_user}
       TFE_REDIS_PASSWORD: ${redis_pass}
       TFE_REDIS_HOST: ${redis_host}
       TFE_REDIS_USE_AUTH: true

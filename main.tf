@@ -33,7 +33,7 @@ locals {
       s3_bucket      = aws_s3_bucket.tfe_data.id
       install_id     = random_id.install_id.hex
       user_token     = random_id.user_token.hex
-      redis_password = random_id.redis_password.hex
+      redis_pass     = random_id.redis_password.hex
       redis_host     = aws_elasticache_replication_group.redis.primary_endpoint_address
     }
   )
@@ -551,11 +551,6 @@ resource "aws_s3_bucket_versioning" "tfe_data" {
   versioning_configuration {
     status = "Enabled"
   }
-}
-
-resource "aws_s3_bucket_acl" "tfe_data" {
-  bucket = aws_s3_bucket.tfe_data.id
-  acl    = "private"
 }
 
 resource "aws_s3_bucket_public_access_block" "tfe_data" {

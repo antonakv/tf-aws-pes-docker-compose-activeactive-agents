@@ -37,12 +37,6 @@ variable "aws_az_2" {
 variable "instance_type_redis" {
   description = "Amazon Elasticashe Redis instance type"
 }
-variable "instance_type_jump" {
-  description = "Ssh jump instance type"
-}
-variable "jump_ami" {
-  description = "Amazon EC2 ami created with Packer"
-}
 variable "key_name" {
   description = "Name of Amazon EC2 keypair for the specific region"
 }

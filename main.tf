@@ -17,24 +17,27 @@ locals {
     }
   )
 
-  # Configuration reference path
+  # TFE configuration reference
   # https://github.com/hashicorp/terraform-enterprise/blob/main/docs/configuration.md
+  # AWS LB tls parameters
+  # https://docs.aws.amazon.com/elasticloadbalancing/latest/application/create-https-listener.html#describe-ssl-policies
   docker_compose_config = templatefile(
     "templates/docker_compose.yml.tpl",
     {
-      hostname       = local.tfe_hostname
-      tfe_quaiio_tag = var.tfe_quaiio_tag
-      enc_password   = random_id.enc_password.hex
-      pg_dbname      = var.postgres_db_name
-      pg_netloc      = aws_db_instance.tfe.endpoint
-      pg_password    = random_string.pgsql_password.result
-      pg_user        = var.postgres_username
-      region         = var.region
-      s3_bucket      = aws_s3_bucket.tfe_data.id
-      install_id     = random_id.install_id.hex
-      user_token     = random_id.user_token.hex
-      redis_pass     = random_id.redis_password.hex
-      redis_host     = aws_elasticache_replication_group.redis.primary_endpoint_address
+      hostname        = local.tfe_hostname
+      tfe_quaiio_tag  = var.tfe_quaiio_tag
+      enc_password    = random_id.enc_password.hex
+      pg_dbname       = var.postgres_db_name
+      pg_netloc       = aws_db_instance.tfe.endpoint
+      pg_password     = random_string.pgsql_password.result
+      pg_user         = var.postgres_username
+      region          = var.region
+      s3_bucket       = aws_s3_bucket.tfe_data.id
+      install_id      = random_id.install_id.hex
+      user_token      = random_id.user_token.hex
+      redis_pass      = random_id.redis_password.hex
+      redis_host      = aws_elasticache_replication_group.redis.primary_endpoint_address
+      tfe_tls_version = var.tfe_tls_version
     }
   )
 
@@ -749,9 +752,6 @@ resource "aws_autoscaling_group" "tfe" {
     value               = "${local.friendly_name_prefix}-asg-tfe"
     propagate_at_launch = true
   }
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 resource "aws_launch_configuration" "tfc_agent" {
@@ -796,9 +796,6 @@ resource "aws_autoscaling_group" "tfc_agent" {
     key                 = "Name"
     value               = "${local.friendly_name_prefix}-asg-tfc_agent"
     propagate_at_launch = true
-  }
-  lifecycle {
-    create_before_destroy = true
   }
 }
 

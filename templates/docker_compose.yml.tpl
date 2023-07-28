@@ -28,7 +28,7 @@ services:
       TFE_LICENSE_PATH: /etc/ssl/private/terraform-enterprise/tfe-license.lic
       TFE_METRICS_ENABLE: false
       TFE_REDIS_PASSWORD: ${redis_pass}
-      TFE_REDIS_HOST: ${redis_host}
+      TFE_REDIS_HOST: ${redis_host}:6380
       TFE_REDIS_USE_AUTH: true
       TFE_REDIS_USE_TLS: true
     cap_add:

@@ -161,3 +161,7 @@ variable "tfe_quaiio_tag" {
   type        = string
   description = "Docker tfe image tag on the quai.io"
 }
+variable "tfe_tls_version" {
+  type        = string
+  description = "TFE tls version"
+}

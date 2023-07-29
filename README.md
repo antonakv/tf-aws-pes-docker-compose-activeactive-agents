@@ -9,7 +9,7 @@ Terraform Enterprise FDO PES Docker Compose Active Active Agents
 - git installed
 [Git installation manual](https://git-scm.com/download/mac)
 
-- Amazon AWS account credentials saved in .aws/credentials file
+- Amazon AWS account credentials saved in `.aws/credentials` file
 [Configuration and credential file settings](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
 
 - Configured CloudFlare DNS zone for domain `my-domain-here.com`

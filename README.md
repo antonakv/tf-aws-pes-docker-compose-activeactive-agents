@@ -21,7 +21,10 @@ Terraform Enterprise FDO PES Docker Compose Active Active Agents
 - Created Amazon EC2 key pair for Linux instance
 [Amazon EC2 key pairs and Linux instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair)
 
+- Packer AWS AMI image built using the repository `antonakv/packer-aws-ubuntujammy-tfe-fdo`
+
 - Packer AWS AMI image built using the repository `antonakv/packer-aws-ubuntujammy-terraform-agent`
+
 
 
 ## Preparation

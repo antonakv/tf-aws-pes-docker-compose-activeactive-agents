@@ -19,7 +19,7 @@ Terraform Enterprise FDO PES Docker Compose Active Active Agents
 [Certbot manual](https://certbot.eff.org/instructions)
 
 - Created Amazon EC2 key pair for Linux instance
-[Creating a public hosted zone](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair)
+[Amazon EC2 key pairs and Linux instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair)
 
 - Packer AWS AMI image built using the repository `antonakv/packer-aws-ubuntujammy-terraform-agent`
 

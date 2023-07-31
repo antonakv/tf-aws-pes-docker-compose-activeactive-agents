@@ -3,11 +3,11 @@
 # Stop on any error
 set -euo pipefail
 
-mkdir /home/ubuntu/install
-
 logpath="/home/ubuntu/install/tfeinstall.log" 
 
-sudo sysctl -w vm.swappiness=1
+mkdir /home/ubuntu/install  | tee -a $logpath
+
+sudo sysctl -w vm.swappiness=1  | tee -a $logpath
 
 function get_secret {
     local secret_id=$1
@@ -16,12 +16,12 @@ function get_secret {
 
 agent_secret=$(get_secret ${agent_token_id})
 
-sudo echo "TFC_AGENT_TOKEN=$agent_secret" > /etc/tfc-agent.env
-sudo echo "TFC_ADDRESS=https://${tfe_hostname}" >> /etc/tfc-agent.env
+sudo echo "TFC_AGENT_TOKEN=$agent_secret" > /etc/tfc-agent.env  | tee -a $logpath
+sudo echo "TFC_ADDRESS=https://${tfe_hostname}" >> /etc/tfc-agent.env | tee -a $logpath
 
-echo ${tfcagent_service} | base64 --decode > /home/ubuntu/install/tfc-agent.service
+echo ${tfcagent_service} | base64 --decode > /home/ubuntu/install/tfc-agent.service | tee -a $logpath
 
-sudo cp /home/ubuntu/install/tfc-agent.service /etc/systemd/system/tfc-agent.service
+sudo cp /home/ubuntu/install/tfc-agent.service /etc/systemd/system/tfc-agent.service | tee -a $logpath
 
 sudo systemctl daemon-reload  | tee -a $logpath
 

@@ -5,25 +5,7 @@ using AWS Network Load Balancer.
 
 ## Requirements
 
-- Hashicorp terraform 1.5.3 version installed
-[Terraform installation manual](https://learn.hashicorp.com/tutorials/terraform/install-cli)
-
-- git installed
-[Git installation manual](https://git-scm.com/download/mac)
-
-- Amazon AWS account credentials saved in .aws/credentials file
-[Configuration and credential file settings](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
-
-- Configured CloudFlare DNS zone for domain `my-domain-here.com`
-[Cloudflare DNS zone setup](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/)
-
-- SSL certificate and SSL key files for the corresponding domain name
-[Certbot manual](https://certbot.eff.org/instructions)
-
-- Created Amazon EC2 key pair for Linux instance
-[Creating a public hosted zone](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair)
-
-- Provisioned with `terraform apply` root folder of the main terraform code in the repository
+- Provisioned with `terraform apply` root folder of the main terraform code ../ of the repository
 
 ## Preparation 
 

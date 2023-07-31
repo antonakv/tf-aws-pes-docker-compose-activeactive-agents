@@ -1,7 +1,3 @@
-locals {
-   aws_eks_credentials_cmd = local.enable_k8s ? "aws eks --region ${var.region} update-kubeconfig --name ${local.friendly_name_prefix}-eks" : null
-}
-
 data "terraform_remote_state" "k8s-agents" {
   backend = "local"
 
@@ -15,23 +11,23 @@ module "eks" {
   version = "18.30.2"
 
   cluster_name    = "${data.terraform_remote_state.k8s-agents.outputs.friendly_name_prefix}-eks"
-  cluster_version = "1.22"
+  cluster_version = "1.23"
 
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
 
   cluster_addons = {
     coredns = {
-      resolve_conflicts = "OVERWRITE"
+      resolve_conflicts_on_update = "OVERWRITE"
     }
     kube-proxy = {}
     vpc-cni = {
-      resolve_conflicts = "OVERWRITE"
+      resolve_conflicts_on_update = "OVERWRITE"
     }
   }
 
-  vpc_id     = aws_vpc.vpc.id
-  subnet_ids = [aws_subnet.subnet_private1.id, aws_subnet.subnet_private2.id]
+  vpc_id     = data.terraform_remote_state.k8s-agents.outputs.vpc_id
+  subnet_ids = [data.terraform_remote_state.k8s-agents.outputs.subnet_private1_id, data.terraform_remote_state.k8s-agents.outputs.subnet_private2_id]
 
   eks_managed_node_group_defaults = {
     ami_type = "AL2_x86_64"
@@ -44,7 +40,7 @@ module "eks" {
 
   eks_managed_node_groups = {
     first = {
-      name = "${local.friendly_name_prefix}-ng-1"
+      name = "${data.terraform_remote_state.k8s-agents.outputs.friendly_name_prefix}-ng-1"
 
       instance_types = ["t3.large"]
       disk_size      = 50
@@ -54,7 +50,7 @@ module "eks" {
       desired_size = 3
 
       vpc_security_group_ids = [
-        aws_security_group.internal_sg.id
+        data.terraform_remote_state.k8s-agents.outputs.internal_sg_id
       ]
     }
   }
@@ -79,6 +75,16 @@ provider "kubernetes" {
   }
 }
 
+resource "kubernetes_namespace" "tfc-agent" {
+
+  metadata {
+    name = "tfc-agent"
+    labels = {
+      app = "tfc-agent"
+    }
+  }
+}
+
 resource "kubernetes_deployment" "tfc-agent" {
   metadata {
     name = "tfc-agent"
@@ -86,6 +92,7 @@ resource "kubernetes_deployment" "tfc-agent" {
       app = "tfc-agent"
 
     }
+    namespace = kubernetes_namespace.tfc-agent.id
   }
   spec {
     selector {
@@ -102,15 +109,15 @@ resource "kubernetes_deployment" "tfc-agent" {
       }
       spec {
         container {
-          image = "hashicorp/tfc-agent:latest"
+          image = "hashicorp/tfc-agent:${var.tfc_agent_docker_image_tag}"
           name  = "tfc-agent"
           env {
             name  = "TFC_AGENT_TOKEN"
-            value = var.agent_token
+            value = data.terraform_remote_state.k8s-agents.outputs.agent_token
           }
           env {
             name  = "TFC_ADDRESS"
-            value = "https://${local.tfe_hostname}"
+            value = "https://${data.terraform_remote_state.k8s-agents.outputs.tfe_hostname}"
           }
           env {
             name  = "TFC_AGENT_LOG_LEVEL"

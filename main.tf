@@ -131,7 +131,7 @@ data "aws_iam_policy_document" "secretsmanager" {
   statement {
     actions   = ["secretsmanager:GetSecretValue"]
     effect    = "Allow"
-    resources = [aws_secretsmanager_secret_version.tfe_license.secret_id, aws_secretsmanager_secret_version.tls_certificate.secret_id, aws_secretsmanager_secret_version.tls_key.secret_id, aws_secretsmanager_secret_version.tls_chain.secret_id]
+    resources = [aws_secretsmanager_secret_version.tfe_license.secret_id, aws_secretsmanager_secret_version.tls_certificate.secret_id, aws_secretsmanager_secret_version.tls_key.secret_id, aws_secretsmanager_secret_version.tls_chain.secret_id, aws_secretsmanager_secret_version.agent_token.secret_id]
     sid       = "AllowSecretsManagerSecretAccess"
   }
 }

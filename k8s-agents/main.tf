@@ -15,7 +15,8 @@ module "eks" {
 
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
-  create_node_security_group      = false
+  create_node_security_group      = true
+  create_cluster_security_group   = true
 
   cluster_addons = {
     coredns = {
@@ -33,12 +34,9 @@ module "eks" {
   subnet_ids = [data.terraform_remote_state.k8s-agents.outputs.subnet_private1_id, data.terraform_remote_state.k8s-agents.outputs.subnet_private2_id]
 
   eks_managed_node_group_defaults = {
-    ami_type = "AL2_x86_64"
-
-    attach_cluster_primary_security_group = true
-
-    # Disabling and using externally provided security groups
-    create_security_group = false
+    ami_type                              = "AL2_x86_64"
+    attach_cluster_primary_security_group = false
+    create_security_group                 = true
   }
 
   eks_managed_node_groups = {

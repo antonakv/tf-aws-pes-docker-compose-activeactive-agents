@@ -155,9 +155,9 @@ data "aws_iam_policy_document" "tfe_asg_discovery" {
 }
 
 resource "random_string" "friendly_name" {
-  length  = 4
+  length  = 6
   upper   = false
-  numeric = false
+  numeric = true
   special = false
 }
 

@@ -25,7 +25,7 @@ tfc_agent_docker_image_tag = "latest"
 - In the same folder you were before, run 
 
 ```bash
-terraform init
+terraform init -upgrade
 ```
 
 Example output:

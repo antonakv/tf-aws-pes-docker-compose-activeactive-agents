@@ -8,20 +8,23 @@ data "terraform_remote_state" "k8s-agents" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "18.30.2"
+  version = "18.31.2"
 
   cluster_name    = "${data.terraform_remote_state.k8s-agents.outputs.friendly_name_prefix}-eks"
-  cluster_version = "1.23"
+  cluster_version = "1.27"
 
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
+  create_node_security_group      = false
 
   cluster_addons = {
     coredns = {
+      resolve_conflicts_on_create = "PRESERVE"
       resolve_conflicts_on_update = "OVERWRITE"
     }
     kube-proxy = {}
     vpc-cni = {
+      resolve_conflicts_on_create = "PRESERVE"
       resolve_conflicts_on_update = "OVERWRITE"
     }
   }

@@ -23,7 +23,10 @@ module "eks" {
       resolve_conflicts_on_create = "PRESERVE"
       resolve_conflicts_on_update = "OVERWRITE"
     }
-    kube-proxy = {}
+    kube-proxy = {
+      resolve_conflicts_on_create = "PRESERVE"
+      resolve_conflicts_on_update = "OVERWRITE"
+    }
     vpc-cni = {
       resolve_conflicts_on_create = "PRESERVE"
       resolve_conflicts_on_update = "OVERWRITE"
@@ -77,13 +80,15 @@ provider "kubernetes" {
 }
 
 resource "kubernetes_namespace" "tfc-agent" {
-
   metadata {
     name = "tfc-agent"
     labels = {
       app = "tfc-agent"
     }
   }
+  depends_on = [
+    module.eks
+  ]
 }
 
 resource "kubernetes_deployment" "tfc-agent" {
@@ -138,4 +143,7 @@ resource "kubernetes_deployment" "tfc-agent" {
       }
     }
   }
+  depends_on = [
+    kubernetes_namespace.tfc-agent
+  ]
 }

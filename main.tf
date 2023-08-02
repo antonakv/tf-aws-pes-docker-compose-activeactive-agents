@@ -661,8 +661,8 @@ resource "aws_elasticache_replication_group" "redis" {
   at_rest_encryption_enabled = true
   automatic_failover_enabled = false
   engine                     = "redis"
-  engine_version             = "5.0.6"
-  parameter_group_name       = "default.redis5.0"
+  engine_version             = "7.0"
+  parameter_group_name       = "default.redis7"
   port                       = 6380
   subnet_group_name          = aws_elasticache_subnet_group.tfe.name
   multi_az_enabled           = false

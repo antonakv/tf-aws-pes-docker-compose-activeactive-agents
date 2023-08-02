@@ -17,7 +17,7 @@ cd k8s-agents
 
 ```
 k8s_desired_agents         = 10
-tfc_agent_docker_image_tag = "latest"
+tfc_agent_docker_image_tag = "1.12"
 ```
 
 ## Run terraform code
@@ -982,4 +982,64 @@ Outputs:
 
 kubectl_get_update_credentials = "aws eks --region eu-north-1 update-kubeconfig --name axxxxxxxxx-hsdf-eks"
 namespace_id = "tfc-agent"
+```
+
+## Check tfc-agents deployment in K8S
+
+- In the local machine terminal run text from the terraform output called `kubectl_get_update_credentials`
+
+Example output:
+
+```
+% aws eks --region eu-north-1 update-kubeconfig --name user-2y64g5-eks
+Added new context arn:aws:eks:eu-north-1:247711370364:cluster/user-2y64g5-eks to /Users/user/.kube/config
+```
+
+- In the local machine terminal run `kubectl describe deployment tfc-agent -n tfc-agent`
+
+Example output:
+
+```
+
+k8s-agents % kubectl describe deployment tfc-agent -n tfc-agent
+Name:                   tfc-agent
+Namespace:              tfc-agent
+CreationTimestamp:      Wed, 02 Aug 2023 09:12:24 +0200
+Labels:                 app=tfc-agent
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=tfc-agent
+Replicas:               10 desired | 10 updated | 10 total | 10 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=tfc-agent
+  Containers:
+   tfc-agent:
+    Image:      hashicorp/tfc-agent:latest
+    Port:       <none>
+    Host Port:  <none>
+    Limits:
+      cpu:     1
+      memory:  512Mi
+    Requests:
+      cpu:     250m
+      memory:  50Mi
+    Environment:
+      TFC_AGENT_TOKEN:      lbSyhsTib9G08A.atlasv1.GlCbK9j91mnj8qSjVROd9lcq8O3HIHsdU5IYVvFFxkMw4qgxP9jJdIaFePyOzgBk1ZM
+      TFC_ADDRESS:          https://2y64g5tfe.userhere.cc
+      TFC_AGENT_LOG_LEVEL:  trace
+    Mounts:                 <none>
+  Volumes:                  <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   tfc-agent-794985fc98 (10/10 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  38m   deployment-controller  Scaled up replica set tfc-agent-794985fc98 to 10
 ```

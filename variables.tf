@@ -147,19 +147,14 @@ variable "asg_desired_agents" {
   default     = 0
   description = "Desired number of tfc agents in Autoscaling group"
 }
-variable "docker_quaiio_token" {
+variable "docker_login" {
   type        = string
-  description = "Docker quai.io token from Account settings"
+  description = "Docker login"
   sensitive   = true
 }
-variable "docker_quaiio_login" {
+variable "docker_image_tag" {
   type        = string
-  description = "Docker quai.io login from Account settings"
-  sensitive   = true
-}
-variable "tfe_quaiio_tag" {
-  type        = string
-  description = "Docker tfe image tag on the quai.io"
+  description = "Docker image tag"
 }
 variable "tfe_tls_version" {
   type        = string
